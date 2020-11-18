@@ -9,7 +9,7 @@ import mormel8 from './Player_mormel_eight.svg'
 import mormel9 from './Player_mormel_nine.svg'
 import mormelHost from './Player_mormel_host.svg'
 
-export default [
+const images = [
     mormelHost,
     mormel1,
     mormel2,
@@ -20,4 +20,6 @@ export default [
     mormel7,
     mormel8,
     mormel9,
-];
+]
+
+export default images;
