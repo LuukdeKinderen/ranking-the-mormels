@@ -19,3 +19,15 @@ html{
   margin: auto;
   /* color: white; */
 }
+
+.Logo{
+  width: 100%; 
+  height: auto;
+}
+
+.LogoContianer{
+  width: 70%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
