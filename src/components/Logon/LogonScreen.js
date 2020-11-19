@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import Grid from '@material-ui/core/Grid';
 
 import logo from '../../Images/mormel.svg';
-import { makeid } from '../../HelperFunctions';
+import { makeid, makeRoomCode } from '../../HelperFunctions';
 
 import { publish, subscribe } from '../Websocket';
 
@@ -37,7 +37,7 @@ export default function LogonScreen() {
     function ChangeHost() {
         setHost(!host);
         if (!host) {
-            setRoomId(makeid(4));
+            setRoomId(makeRoomCode(4));
         } else {
             setRoomId("");
         }
@@ -73,11 +73,16 @@ export default function LogonScreen() {
 
 
     return (
-        <>
 
-            <img alt="Mormel logo" src={logo} width='70%' style={{ maxWidth: '400px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
-            <h1>Ranking the Mormels</h1>
-            <form onSubmit={(e) => Join(e)}>
+        <>
+            <div className="LogoContianer">
+                <img alt="Mormel logo" src={logo}
+                    className="Logo"
+                // style={{minWidth:'70%', maxWidth: '400px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} 
+                />
+            </div>
+            <h1> Ranking the Mormels</h1>
+            <form onSubmit={(e) => Join(e)} >
                 <Grid
 
                     container
@@ -110,19 +115,16 @@ export default function LogonScreen() {
                             {host ? 'HOST' : 'JOIN'}
                         </Button>
                     </Grid>
+                    <Grid item>
+                        <Button onClick={() => ChangeHost()}>
+                            {host ? 'Or Join a room...' : 'Or host a room...'}
+                        </Button>
+                    </Grid>
                 </Grid>
             </form>
 
-
-
-            <Button style={{
-                position: 'absolute',
-                bottom: '0px'
-            }} onClick={() => ChangeHost()}>
-                {host ? 'Or Join a room...' : 'Or host a room...'}
-            </Button>
-
-
         </>
+
+
     );
 }
