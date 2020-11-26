@@ -99,7 +99,7 @@ export default function Ranking(props) {
             lastBestId: items[items.length - 1].id
         }
         publish(
-            { destination: `/app/game/${roomId}/result`, body: JSON.stringify(ranking, player.id) }
+            { destination: `/app/game/${roomId}/ranking`, body: JSON.stringify(ranking) }
         );
         console.log(ranking);
     }
