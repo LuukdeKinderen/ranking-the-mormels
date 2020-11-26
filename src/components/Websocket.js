@@ -25,8 +25,9 @@ client.onConnect = () => {
     var roomId = sessionStorage.getItem('roomId')
     var player = sessionStorage.getItem('player');
     if (roomId != null && player != null) {
+        var id = JSON.parse(player).id
         subscribe(roomId);
-        publish({ destination: `/app/game/${roomId}/state`, body: player });
+        publish({ destination: `/app/game/${roomId}/state`, body: id });
     }
 }
 
