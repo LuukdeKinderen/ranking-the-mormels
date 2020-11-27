@@ -1,5 +1,6 @@
 import { Client } from '@stomp/stompjs'
 
+
 const client = new Client({
     brokerURL: process.env.REACT_APP_WEBSOCKET,
     // connectHeaders: {
@@ -31,7 +32,10 @@ client.onConnect = () => {
     }
 }
 
-client.activate();
+if (process.env.NODE_ENV !== 'test') {
+    client.activate();
+}
+
 
 var subscription = null;
 let messageHandler = () => { };
