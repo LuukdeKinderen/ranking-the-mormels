@@ -15,6 +15,8 @@ import images from '../../Images/playerImages/playerImage'
 
 import { publish } from '../Websocket'
 
+import { getFromStorage } from '../../HelperFunctions'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -22,12 +24,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function LobbyScreen(props) {
+export default function Lobby(props) {
     const classes = useStyles();
 
-    const roomId = sessionStorage.getItem("roomId");
-    const player = JSON.parse(sessionStorage.getItem("player"));
-
+    const roomId = getFromStorage("roomId");
+    const player = getFromStorage("player");
 
     if (player.host && props.players != null) {
 
@@ -65,12 +66,12 @@ export default function LobbyScreen(props) {
         );
         if (props.players.length > 4) {
             StartButton =
-                <Button variant="contained" color="primary" onClick={() => start()} size="large">
+                <Button data-testid="startButton" variant="contained" color="primary" onClick={() => start()} size="large">
                     START
                 </Button>
         } else {
             StartButton =
-                <p>
+                <p data-testid="untilStart">
                     <b>{5 - props.players.length}</b> players need to join
                 </p>
 
@@ -85,7 +86,8 @@ export default function LobbyScreen(props) {
     } else {
         return (
             <>
-                <h4>Waiting for host to start the game...</h4>
+                <h1>You are in room: <i>{roomId}</i></h1>
+                <p>Waiting for host to start the game...</p>
             </>
         );
     }

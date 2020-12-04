@@ -11,6 +11,8 @@ import { makeid, makeRoomCode } from '../../HelperFunctions';
 
 import { publish, subscribe } from '../Websocket';
 
+import { setInStorage} from '../../HelperFunctions'
+
 
 export default function LogonScreen() {
 
@@ -22,7 +24,7 @@ export default function LogonScreen() {
 
 
     useEffect(() => {
-        if (process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV === 'development') {
             fetch("https://randomuser.me/api/")
                 .then(res => res.json())
                 .then(res => {
@@ -51,7 +53,7 @@ export default function LogonScreen() {
             host: true
         }
 
-        sessionStorage.setItem('roomId', roomId);
+        setInStorage('roomId', roomId);
         subscribe(roomId);
 
 
@@ -65,9 +67,8 @@ export default function LogonScreen() {
             newPlayer.host = false;
             publish({ destination: `/app/room/${roomId}/addPlayer`, body: JSON.stringify(newPlayer) });
         }
-
-        sessionStorage.setItem('player', JSON.stringify(newPlayer))
-        history.push(`/Game`);
+        setInStorage('player', newPlayer);
+        history.push(`/game`);
     }
 
 

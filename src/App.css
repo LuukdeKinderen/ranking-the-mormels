@@ -9,7 +9,7 @@ html{
   /* background-color: #282c34; */
   padding-left: 2mm;
   padding-right: 2mm;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;

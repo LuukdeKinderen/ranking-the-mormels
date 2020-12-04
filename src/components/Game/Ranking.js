@@ -6,8 +6,14 @@ import {
     ListItemText,
     ListItemIcon,
     ListItemSecondaryAction,
-    ListSubheader
+    ListSubheader,
+    IconButton
 } from "@material-ui/core";
+
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+
+
 import Button from "@material-ui/core/Button";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +23,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import images from '../../Images/playerImages/playerImage'
 
 import { publish } from '../Websocket'
+
+import { getFromStorage } from '../../HelperFunctions'
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -64,10 +72,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
+
 export default function Ranking(props) {
     const classes = useStyles();
-    const player = JSON.parse(sessionStorage.getItem("player"));
-    const roomId = sessionStorage.getItem("roomId");
+    const player = getFromStorage('player');
+    const roomId = getFromStorage("roomId");
 
     var players = props.players;
     players = players.filter(function (obj) {
@@ -91,7 +101,21 @@ export default function Ranking(props) {
         );
     }
 
+    const placeDown = (list, key) => {
+        if (key !== list.length - 1) {
+            setItems(reorder(list, key, key + 1))
+        }
+    }
+
+    const placeUp = (list, key) => {
+        if (key !== 0) {
+            setItems(reorder(list, key, key - 1))
+        }
+    }
+
+
     function sendRanking() {
+        props.setRanking(false);
         var ranking = {
             firstId: items[0].id,
             secondId: items[1].id,
@@ -101,12 +125,12 @@ export default function Ranking(props) {
         publish(
             { destination: `/app/game/${roomId}/ranking`, body: JSON.stringify(ranking) }
         );
-        console.log(ranking);
     }
 
 
     return (
         <>
+            <p>Drag the players to the correct position</p>
             <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
                 <Droppable droppableId="droppable">
                     {(provided) => (
@@ -123,6 +147,7 @@ export default function Ranking(props) {
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided, snapshot) => (
                                             <ListItem
+                                                key={item.id}
                                                 ContainerComponent="li"
                                                 ContainerProps={{ ref: provided.innerRef }}
                                                 {...provided.draggableProps}
@@ -132,6 +157,7 @@ export default function Ranking(props) {
                                                     provided.draggableProps.style
                                                 )}
                                             >
+                                                <div style={{ display: 'none' }} data-testid="playerName">{JSON.stringify(item)}</div>
                                                 <ListItemIcon>
                                                     <img alt="Mormel logo" src={images[item.imageIndex]} style={{ width: '100%', marginRight: '5px' }} />
                                                 </ListItemIcon>
@@ -139,7 +165,14 @@ export default function Ranking(props) {
                                                     primary={item.name}
                                                     secondary={item.ranking ? <b>{item.ranking}</b> : <i> neutral </i>}
                                                 />
-                                                <ListItemSecondaryAction />
+                                                <ListItemSecondaryAction >
+                                                    <IconButton disabled={index === 0} onClick={() => placeUp(items, index)}>
+                                                        <AddIcon fontSize="large" />
+                                                    </IconButton>
+                                                    <IconButton disabled={index === items.length - 1} onClick={() => placeDown(items, index)}>
+                                                        <RemoveIcon fontSize="large" />
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
                                             </ListItem>
                                         )}
                                     </Draggable>
