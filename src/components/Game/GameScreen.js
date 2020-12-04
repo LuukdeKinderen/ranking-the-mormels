@@ -9,8 +9,6 @@ import { useHistory } from "react-router-dom";
 import { setMessageHandler } from '../Websocket'
 
 import { getFromStorage, setInStorage } from '../../HelperFunctions'
-import { ImportExportOutlined } from '@material-ui/icons';
-
 
 export default function GameScreen() {
     const history = useHistory();
