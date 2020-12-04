@@ -12,6 +12,7 @@ import {
 
 import LogonScreen from './components/Logon/LogonScreen';
 import GameScreen from './components/Game/GameScreen';
+import Result from './components/Game/Result'
 
 
 
@@ -57,8 +58,21 @@ export default function App() {
               <Route exact path="/">
                 <LogonScreen />
               </Route>
-              <Route path="/Game">
+              <Route path="/game">
                 <GameScreen />
+              </Route>
+              <Route path='/result'>
+                <Result result={{
+                  player:"Eefje", 
+                  annotation:"lange Jan, drink maar 5 slokken daarboven!", 
+                  result:[
+                  {imageIndex:2, name:"Eefje"},
+                  {imageIndex:2, name:"pieter"},
+                  {imageIndex:2, name:"jane"},
+                  {imageIndex:2, name:"henkei"},
+                ]}
+              }
+              />
               </Route>
               <Route path="*">
                 <h1>Er is iets misgegaan...</h1>

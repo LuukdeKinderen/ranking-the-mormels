@@ -1,5 +1,7 @@
 import { Client } from '@stomp/stompjs'
 
+import {getFromStorage} from '../HelperFunctions'
+
 
 const client = new Client({
     brokerURL: process.env.REACT_APP_WEBSOCKET,
@@ -23,12 +25,11 @@ client.onStompError = (frame) => {
 };
 
 client.onConnect = () => {
-    var roomId = sessionStorage.getItem('roomId')
-    var player = sessionStorage.getItem('player');
+    var roomId = getFromStorage('roomId')
+    var player = getFromStorage('player');
     if (roomId != null && player != null) {
-        var id = JSON.parse(player).id
         subscribe(roomId);
-        publish({ destination: `/app/game/${roomId}/state`, body: id });
+        publish({ destination: `/app/game/${roomId}/state`, body: player.id });
     }
 }
 

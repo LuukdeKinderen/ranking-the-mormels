@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 
-import LobbyScreen from './LobbyScreen';
+import Lobby from './Lobby';
 import Ranking from './Ranking';
+import Result from './Result'
 
 import { useHistory } from "react-router-dom";
 
 import { setMessageHandler } from '../Websocket'
 
+import { getFromStorage, setInStorage } from '../../HelperFunctions'
+import { ImportExportOutlined } from '@material-ui/icons';
 
 
 export default function GameScreen() {
@@ -14,6 +17,9 @@ export default function GameScreen() {
 
     const [players, setPlayers] = useState(null);
     const [question, setQuestion] = useState(null);
+    const [result, setResult] = useState(null);
+
+    const [ranking, setRanking] = useState(true);
 
     setMessageHandler((message) => {
         message = JSON.parse(message);
@@ -24,30 +30,45 @@ export default function GameScreen() {
 
         if (message.question != null) {
             setQuestion(message.question)
+            setRanking(true);
+            setResult(null);
         }
 
+        if (message.result != null) {
+            setResult(message.result);
+        }
         // if message is for player
-        if (message.player != null && message.player.id === JSON.parse(sessionStorage.getItem('player')).id) {
+        if (message.player != null && message.player.id === getFromStorage('player').id) {
             if (message.error != null) {
                 alert(message.error);
-                //sessionStorage.clear();
                 history.push('/');
             } else {
-                sessionStorage.setItem('player', JSON.stringify(message.player));
+                setInStorage('player', message.player);
             }
         }
     })
 
     if (question === null) {
         return (
-            <LobbyScreen players={players} />
+            <Lobby players={players} />
         );
-    } else {
+    } else if (result === null && ranking) {
         return (
             <>
-                <p>Question: {question}</p>
-                <Ranking players={players} />
+                <h1>{question}</h1>
+                <Ranking setRanking={setRanking} players={players} />
             </>
         );
+    } else if (result === null && !ranking) {
+        return (
+            <p>waiting for results</p>
+        );
+    } else if (result !== null) {
+        return (
+            <>
+                <h1>{question}</h1>
+                <Result result={result} />
+            </>
+        )
     }
 }
