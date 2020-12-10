@@ -19,17 +19,17 @@ export function makeRoomCode(length) {
 }
 
 export function setInStorage(key, data) {
-    if (process.env.NODE_ENV === 'production') {
-        localStorage.setItem(key, JSON.stringify(data))
-    } else {
+    // if (process.env.NODE_ENV === 'production') {
+    //     localStorage.setItem(key, JSON.stringify(data))
+    // } else {
         sessionStorage.setItem(key, JSON.stringify(data))
-    }
+    // }
 }
 
 export function getFromStorage(key) {
-    if (process.env.NODE_ENV === 'production') {
-        return JSON.parse(localStorage.getItem(key))
-    } else {
+    // if (process.env.NODE_ENV === 'production') {
+    //     return JSON.parse(localStorage.getItem(key))
+    // } else {
         return JSON.parse(sessionStorage.getItem(key))
-    }
+    // }
 }

@@ -166,12 +166,12 @@ export default function Ranking(props) {
                                                     secondary={item.ranking ? <b>{item.ranking}</b> : <i> neutral </i>}
                                                 />
                                                 <ListItemSecondaryAction >
-                                                    <IconButton disabled={index === 0} onClick={() => placeUp(items, index)}>
+                                                    {/* <IconButton disabled={index === 0} onClick={() => placeUp(items, index)}>
                                                         <AddIcon fontSize="large" />
                                                     </IconButton>
                                                     <IconButton disabled={index === items.length - 1} onClick={() => placeDown(items, index)}>
                                                         <RemoveIcon fontSize="large" />
-                                                    </IconButton>
+                                                    </IconButton> */}
                                                 </ListItemSecondaryAction>
                                             </ListItem>
                                         )}
