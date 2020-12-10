@@ -6,12 +6,12 @@ import {
     ListItemText,
     ListItemIcon,
     ListItemSecondaryAction,
-    ListSubheader,
-    IconButton
+    ListSubheader
+    // ,IconButton
 } from "@material-ui/core";
 
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+// import AddIcon from '@material-ui/icons/Add';
+// import RemoveIcon from '@material-ui/icons/Remove';
 
 
 import Button from "@material-ui/core/Button";
@@ -101,17 +101,17 @@ export default function Ranking(props) {
         );
     }
 
-    const placeDown = (list, key) => {
-        if (key !== list.length - 1) {
-            setItems(reorder(list, key, key + 1))
-        }
-    }
+    // const placeDown = (list, key) => {
+    //     if (key !== list.length - 1) {
+    //         setItems(reorder(list, key, key + 1))
+    //     }
+    // }
 
-    const placeUp = (list, key) => {
-        if (key !== 0) {
-            setItems(reorder(list, key, key - 1))
-        }
-    }
+    // const placeUp = (list, key) => {
+    //     if (key !== 0) {
+    //         setItems(reorder(list, key, key - 1))
+    //     }
+    // }
 
 
     function sendRanking() {
