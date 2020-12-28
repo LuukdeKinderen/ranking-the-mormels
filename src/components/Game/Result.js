@@ -40,7 +40,7 @@ const ranking = (key) => {
 export default function Result(props) {
     const classes = useStyles();
 
-    const taskFor = props.result.player.name;
+    //const taskFor = props.result.player.name;
     
     const task = props.result.task;
     const result = props.result.result;
