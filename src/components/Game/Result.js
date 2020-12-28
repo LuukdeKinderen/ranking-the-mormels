@@ -40,11 +40,10 @@ const ranking = (key) => {
 export default function Result(props) {
     const classes = useStyles();
 
-    const taskFor = props.result.player.name;
-    const annotation = props.result.annotation;
+    //const taskFor = props.result.player.name;
+    
+    const task = props.result.task;
     const result = props.result.result;
-
-    const task = `${taskFor}, ${annotation}`
 
     const player = getFromStorage("player");
     const roomId = getFromStorage("roomId");
