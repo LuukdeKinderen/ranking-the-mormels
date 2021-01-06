@@ -81,7 +81,7 @@ export default function LogonScreen() {
                     type="number"
                     required
                     disabled={!host}
-                    label="Room code"
+                    label="Question Count"
                     value={questionCount}
                     onChange={(e) => setQuestionCount(e.target.value)}
                 />
