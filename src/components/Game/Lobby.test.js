@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 import Lobby from './Lobby';
-import { setInStorage } from '../../HelperFunctions'
+import {setInStorage} from '../../HelperFunctions'
 
 const roomId = "TEST";
 const hostPlayer = {
@@ -29,11 +29,11 @@ const playerSetup = () => {
 }
 
 const players = [
-    { name: 'henk', imageIndex: 1 },
-    { name: 'ingrit', imageIndex: 2 },
-    { name: 'pieter', imageIndex: 3 },
-    { name: 'jan', imageIndex: 4 },
-    { name: 'klaasen', imageIndex: 5 },
+    {name: 'henk', imageIndex: 1},
+    {name: 'ingrit', imageIndex: 2},
+    {name: 'pieter', imageIndex: 3},
+    {name: 'jan', imageIndex: 4},
+    {name: 'klaasen', imageIndex: 5},
 ];
 
 test('As a host Room Id is vissable on lobbyScreen', () => {
@@ -41,7 +41,7 @@ test('As a host Room Id is vissable on lobbyScreen', () => {
     hostSetup();
 
     //Act
-    render(<Lobby players={players} />)
+    render(<Lobby players={players}/>)
 
 
     //Assert
@@ -53,7 +53,7 @@ test('As a player Room Id is vissable on lobbyScreen', () => {
     playerSetup();
 
     //Act
-    render(<Lobby players={players} />)
+    render(<Lobby players={players}/>)
 
 
     //Assert
@@ -65,7 +65,7 @@ test('As a host start button is visible', () => {
     hostSetup();
 
     //Act
-    render(<Lobby players={players} />)
+    render(<Lobby players={players}/>)
 
     //Assert
     expect(screen.getByTestId('startButton')).not.toBeNull();
@@ -81,8 +81,8 @@ test('As a host playernumber till start is vissable', () => {
     var expected = 5 - fewPlayers.length; //minimum is 5
 
     //Act
-    render(<Lobby players={fewPlayers} />)
+    render(<Lobby players={fewPlayers}/>)
 
     //Assert
-    expect(screen.getByTestId('untilStart')).toHaveTextContent(`${expected} players need to join`);
+    expect(screen.getByTestId('untilStart')).toHaveTextContent(`Waiting for ${expected} more player(s) to join...`);
 });

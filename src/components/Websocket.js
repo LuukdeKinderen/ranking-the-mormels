@@ -1,4 +1,4 @@
-import { Client } from '@stomp/stompjs'
+import {Client} from '@stomp/stompjs'
 
 import {getFromStorage} from '../HelperFunctions'
 
@@ -10,13 +10,15 @@ const client = new Client({
     //   passcode: "password"
     // },
     debug: function (str) {
-        if (process.env.NODE_ENV !== 'production') { console.log(str) };
+        if (process.env.NODE_ENV !== 'production') {
+            console.log(str)
+        }
+        ;
     },
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000
 });
-
 
 
 client.onStompError = (frame) => {
@@ -29,7 +31,7 @@ client.onConnect = () => {
     var player = getFromStorage('player');
     if (roomId != null && player != null) {
         subscribe(roomId);
-        publish({ destination: `/app/game/${roomId}/state`, body: player.id });
+        publish({destination: `/app/game/${roomId}/state`, body: player.id});
     }
 }
 
@@ -39,7 +41,10 @@ if (process.env.NODE_ENV !== 'test') {
 
 
 var subscription = null;
-let messageHandler = () => { };
+let messageHandler = () => {
+};
+
+
 
 export function subscribe(newRoomId) {
     if (subscription != null) {
@@ -61,4 +66,8 @@ export function setMessageHandler(newMessageHandler) {
             console.log(msg)
         }
     };
+}
+
+export function disconnect(){
+    client.forceDisconnect();
 }

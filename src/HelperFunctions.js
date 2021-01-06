@@ -33,3 +33,7 @@ export function getFromStorage(key) {
         return JSON.parse(sessionStorage.getItem(key))
     // }
 }
+
+export function clearStorage(){
+    sessionStorage.clear();
+}

@@ -46,34 +46,39 @@ export default function Lobby(props) {
                     subheader={
                         <ListSubheader component="div" id="nested-list-subheader">
                             Players:
-                    </ListSubheader>
+                        </ListSubheader>
                     }
                 >
                     {props.players.map((player, key) =>
-                        <ListItem key={key} >
+                        <ListItem key={key}>
                             <ListItemIcon>
-                                <img alt="Mormel logo" src={images[player.imageIndex]} style={{ width: '100%', marginRight: '5px' }} />
+                                <img alt="Mormel logo" src={images[player.imageIndex]}
+                                    style={{ width: '100%', marginRight: '5px' }} />
                             </ListItemIcon>
                             <ListItemText
                                 primary={player.name}
                             />
                             <ListItemSecondaryAction />
                         </ListItem>
-
                     )}
                 </List>
             </>
         );
         if (props.players.length > 4) {
             StartButton =
-                <Button data-testid="startButton" variant="contained" color="primary" onClick={() => start()} size="large">
-                    START
+                <>
+                    <p>Players: <b>{props.players.length}</b> / 10</p>
+                    <Button data-testid="startButton" variant="contained" color="primary" onClick={() => start()}
+                        size="large">
+                        START
                 </Button>
+                </>
         } else {
-            StartButton =
-                <p data-testid="untilStart">
-                    <b>{5 - props.players.length}</b> players need to join
-                </p>
+            StartButton = <p>
+                Players: <b>{props.players.length}</b> / 10<br />
+                <span data-testid="untilStart">Waiting for {5 - props.players.length} more player(s) to join...</span>
+            </p>
+            //  <p data-testid="untilStart"> <b>{5 - props.players.length}</b> players need to join</p>
 
         }
         return (
@@ -83,11 +88,24 @@ export default function Lobby(props) {
                 {StartButton}
             </>
         );
+    } else if (props.players != null) {
+        var message = `Waiting for ${5 - props.players.length} more player(s) to join...`
+        if (props.players.length > 4) {
+            message = "Waiting for host to start the game..."
+        }
+        return (
+            <>
+                <h1>You are in room: <i>{roomId}</i> </h1>
+                <p>
+                    Players: <b>{props.players.length}</b> / 10<br />
+                    {message}
+                </p>
+            </>
+        );
     } else {
         return (
             <>
-                <h1>You are in room: <i>{roomId}</i></h1>
-                <p>Waiting for host to start the game...</p>
+                <h1>Joining room: <i>{roomId}</i>...</h1>
             </>
         );
     }

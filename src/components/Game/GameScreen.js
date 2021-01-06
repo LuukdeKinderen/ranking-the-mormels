@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Lobby from './Lobby';
 import Ranking from './Ranking';
 import Result from './Result'
+import GameOver from './GameOver';
 
 import { useHistory } from "react-router-dom";
 
@@ -10,12 +11,15 @@ import { setMessageHandler } from '../Websocket'
 
 import { getFromStorage, setInStorage } from '../../HelperFunctions'
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 export default function GameScreen() {
     const history = useHistory();
 
     const [players, setPlayers] = useState(null);
     const [question, setQuestion] = useState(null);
     const [result, setResult] = useState(null);
+    const [gameOver, setGameOver] = useState(false);
 
     const [ranking, setRanking] = useState(true);
 
@@ -32,6 +36,10 @@ export default function GameScreen() {
             setResult(null);
         }
 
+        if (message.gameOver != null) {
+            setGameOver(true);
+        }
+
         if (message.result != null) {
             setResult(message.result);
         }
@@ -46,7 +54,11 @@ export default function GameScreen() {
         }
     })
 
-    if (question === null) {
+    if (gameOver === true) {
+        return (
+            <GameOver players={players} />
+        );
+    } else if (question === null) {
         return (
             <Lobby players={players} />
         );
@@ -59,7 +71,10 @@ export default function GameScreen() {
         );
     } else if (result === null && !ranking) {
         return (
-            <p>waiting for results</p>
+            <>
+                <h1>waiting for results</h1>
+                <CircularProgress />
+            </>
         );
     } else if (result !== null) {
         return (

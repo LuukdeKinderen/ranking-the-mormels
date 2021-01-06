@@ -72,8 +72,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
 export default function Ranking(props) {
     const classes = useStyles();
     const player = getFromStorage('player');
@@ -101,17 +99,25 @@ export default function Ranking(props) {
         );
     }
 
-    // const placeDown = (list, key) => {
-    //     if (key !== list.length - 1) {
-    //         setItems(reorder(list, key, key + 1))
-    //     }
-    // }
-
-    // const placeUp = (list, key) => {
-    //     if (key !== 0) {
-    //         setItems(reorder(list, key, key - 1))
-    //     }
-    // }
+    function sendbutton() {
+        var state = false;
+        players.forEach(player => {
+            console.log(player.ranking);
+            if (player.ranking !== null && player.ranking !== undefined) {
+                state = true;
+            }
+        });
+        
+        if (state) {
+            return (
+                <Button
+                style={{marginTop:"20px"}}
+                 variant="contained" color="primary" onClick={() => sendRanking()} size="large">
+                    SEND RANKING
+                </Button>
+            );
+        }
+    }
 
 
     function sendRanking() {
@@ -122,6 +128,9 @@ export default function Ranking(props) {
             thirdId: items[2].id,
             lastBestId: items[items.length - 1].id
         }
+        players.forEach(player => {
+            player.ranking = null;
+        });
         publish(
             { destination: `/app/game/${roomId}/ranking`, body: JSON.stringify(ranking) }
         );
@@ -140,7 +149,7 @@ export default function Ranking(props) {
                                 subheader={
                                     <ListSubheader component="div" id="nested-list-subheader">
                                         Ranking:
-                                </ListSubheader>
+                                    </ListSubheader>
                                 }
                             >
                                 {items.map((item, index) => (
@@ -157,15 +166,17 @@ export default function Ranking(props) {
                                                     provided.draggableProps.style
                                                 )}
                                             >
-                                                <div style={{ display: 'none' }} data-testid="playerName">{JSON.stringify(item)}</div>
+                                                <div style={{ display: 'none' }}
+                                                    data-testid="playerName">{JSON.stringify(item)}</div>
                                                 <ListItemIcon>
-                                                    <img alt="Mormel logo" src={images[item.imageIndex]} style={{ width: '100%', marginRight: '5px' }} />
+                                                    <img alt="Mormel logo" src={images[item.imageIndex]}
+                                                        style={{ width: '100%', marginRight: '5px' }} />
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={item.name}
-                                                    secondary={item.ranking ? <b>{item.ranking}</b> : <i> neutral </i>}
+                                                    secondary={item.ranking ? <b>{item.ranking}</b> : <i>neutral</i>}
                                                 />
-                                                <ListItemSecondaryAction >
+                                                <ListItemSecondaryAction>
                                                     {/* <IconButton disabled={index === 0} onClick={() => placeUp(items, index)}>
                                                         <AddIcon fontSize="large" />
                                                     </IconButton>
@@ -183,9 +194,7 @@ export default function Ranking(props) {
                     )}
                 </Droppable>
             </DragDropContext>
-            <Button variant="contained" color="primary" onClick={() => sendRanking()} size="large">
-                SEND RANKING
-            </Button>
+            {sendbutton()}
         </>
     );
 }
