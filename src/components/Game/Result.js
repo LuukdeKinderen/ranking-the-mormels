@@ -10,12 +10,12 @@ import {
     ListSubheader
 } from "@material-ui/core";
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import images from '../../Images/playerImages/playerImage'
 
-import { publish } from '../Websocket'
+import {publish} from '../Websocket'
 
-import { getFromStorage } from '../../HelperFunctions'
+import {getFromStorage} from '../../HelperFunctions'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,7 +41,7 @@ export default function Result(props) {
     const classes = useStyles();
 
     //const taskFor = props.result.player.name;
-    
+
     const task = props.result.task;
     const result = props.result.result;
 
@@ -51,14 +51,17 @@ export default function Result(props) {
     var nextButton;
     if (player.host) {
         nextButton = (
-            <Button variant="contained" color="primary" onClick={() => next()} size="large">
+            <Button 
+            style={{marginTop:"20px"}}
+            variant="contained" color="primary" onClick={() => next()} size="large">
                 Next question
             </Button>
         )
     }
+
     function next() {
         publish(
-            { destination: `/app/game/${roomId}/new-question`, body: JSON.stringify(player) }
+            {destination: `/app/game/${roomId}/new-question`, body: JSON.stringify(player)}
         );
     }
 
@@ -74,17 +77,17 @@ export default function Result(props) {
                 }
             >
                 {result.map((player, key) =>
-                    <ListItem key={key} >
+                    <ListItem key={key}>
                         <ListItemIcon>
-                            <img alt="Mormel logo" src={images[player.imageIndex]} style={{ width: '100%', marginRight: '5px' }} />
+                            <img alt="Mormel logo" src={images[player.imageIndex]}
+                                 style={{width: '100%', marginRight: '5px'}}/>
                         </ListItemIcon>
                         <ListItemText
                             primary={player.name}
                             secondary={ranking(key)}
                         />
-                        <ListItemSecondaryAction />
+                        <ListItemSecondaryAction/>
                     </ListItem>
-
                 )}
             </List>
             {nextButton}

@@ -11,7 +11,7 @@ import { makeid, makeRoomCode } from '../../HelperFunctions';
 
 import { publish, subscribe } from '../Websocket';
 
-import { setInStorage} from '../../HelperFunctions'
+import { setInStorage } from '../../HelperFunctions'
 
 
 export default function LogonScreen() {
@@ -20,6 +20,7 @@ export default function LogonScreen() {
 
     const [name, setName] = useState("");
     const [roomId, setRoomId] = useState("");
+    const [questionCount, setQuestionCount] = useState(10);
     const [host, setHost] = useState(false);
 
 
@@ -32,8 +33,6 @@ export default function LogonScreen() {
                 });
         }
     }, [])
-
-
 
 
     function ChangeHost() {
@@ -61,6 +60,7 @@ export default function LogonScreen() {
             var gameRoom = {
                 id: roomId,
                 players: [newPlayer],
+                questionCount: questionCount,
             };
             publish({ destination: '/app/room/create', body: JSON.stringify(gameRoom) });
         } else {
@@ -72,6 +72,32 @@ export default function LogonScreen() {
     }
 
 
+    var roomCodeOrQuestionCount =
+        host ?
+            <>
+                <TextField
+                    InputProps={{ inputProps: { max: 15, min: 1 } }}
+                    style={{width:"190px"}}
+                    type="number"
+                    required
+                    disabled={!host}
+                    label="Room code"
+                    value={questionCount}
+                    onChange={(e) => setQuestionCount(e.target.value)}
+                />
+
+            </> :
+            <>
+                <TextField
+                    InputProps={{ inputProps: { maxLength: 4 } }}
+                    required
+                    disabled={host}
+                    label="Room code"
+                    value={roomId}
+                    onChange={(e) => setRoomId(e.target.value)}
+                />
+            </>
+
 
     return (
 
@@ -79,11 +105,11 @@ export default function LogonScreen() {
             <div className="LogoContianer">
                 <img alt="Mormel logo" src={logo}
                     className="Logo"
-                // style={{minWidth:'70%', maxWidth: '400px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} 
+                // style={{minWidth:'70%', maxWidth: '400px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
                 />
             </div>
-            <h1> Ranking the Mormels</h1>
-            <form onSubmit={(e) => Join(e)} >
+            <h1>Ranking the Mormels</h1>
+            <form onSubmit={(e) => Join(e)}>
                 <Grid
 
                     container
@@ -96,20 +122,17 @@ export default function LogonScreen() {
                         <TextField
                             InputProps={{ inputProps: { minLength: 3, maxLength: 20 } }}
                             required
-                            label="Nick name"
+                            label="Nickname"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
                     </Grid>
                     <Grid item>
-                        <TextField
-                            InputProps={{ inputProps: { maxLength: 4 } }}
-                            required
-                            disabled={host}
-                            label="Room code"
-                            value={roomId}
-                            onChange={(e) => setRoomId(e.target.value)}
-                        />
+                        {roomCodeOrQuestionCount}
+
+                    </Grid>
+                    <Grid item>
+
                     </Grid>
                     <Grid item>
                         <Button variant="contained" color="primary" type="submit" size="large">
